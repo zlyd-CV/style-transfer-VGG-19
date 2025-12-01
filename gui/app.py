@@ -215,12 +215,6 @@ class MainWindow(QMainWindow):
         self.start_btn.setEnabled(enabled)
         self.content_btn.setEnabled(enabled)
         self.style_btn.setEnabled(enabled)
-        # 确定是第几张图像（epoch / 10）
-        # 文件名格式：epoch_0.png, epoch_10.png, ..., epoch_90.png
-        basename = os.path.basename(path)
-        epoch_str = basename.replace('epoch_', '').replace(
-            '.png', '').replace('.jpg', '').replace('.jpeg', '')
-        epoch_num = int(epoch_str)
 
     def update_progress(self, epoch):
         self.progress_bar.setValue(epoch + 1)
@@ -242,23 +236,6 @@ class MainWindow(QMainWindow):
                     self.image_widgets[idx]['path'] = path
         except Exception as e:
             print(f"更新图像出错: {e}")
-
-    def training_finished(self):
-        """训练完成后的处理"""
-        self.start_btn.setEnabled(True)
-        self.content_btn.setEnabled(True)
-        self.style_btn.setEnabled(True)
-        QMessageBox.information(self, "完成", "训练已完成！所有图像已生成。")
-
-    def training_error(self, error):
-        """训练出错时的处理"""
-        self.start_btn.setEnabled(True)
-        self.content_btn.setEnabled(True)
-        self.style_btn.setEnabled(True)
-        QMessageBox.critical(self, "错误", f"训练出错：\n{error}")
-
-    def closeEvent(self, event):
-        """窗口关闭时的清理工作"""
 
     def save_single_image(self, idx):
         if self.image_widgets[idx]['path']:
